@@ -8,7 +8,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     command: --default-authentication-plugin=mysql_native_password
-    restart: unless-stopped
+    restart: always
     volumes:
       - ./db_data:/usr/data
     ports:
@@ -22,9 +22,9 @@ services:
     environment:
       - APACHE_RUN_USER=#${UID}
       - APACHE_RUN_GROUP=#${UID}
-    restart: unless-stopped
+    restart: always
     volumes:
-      # - ./public:/var/www/html/public
+      - ./public:/var/www/html/public
       - ./apache_log:/var/log/apache2
     ports:
       - 8888:80
@@ -34,7 +34,7 @@ services:
       - db
   adminer:
     image: adminer
-    restart: unless-stopped
+    restart: always
     ports:
       - 8889:8080
 volumes:
