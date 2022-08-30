@@ -14,7 +14,8 @@ RUN apt-get install -y \
     libmcrypt-dev \
     libreadline-dev \
     libfreetype6-dev \
-    g++
+    g++ \
+    vim
 
 RUN docker-php-ext-install \
     bz2 \
@@ -46,5 +47,13 @@ ARG uid
 RUN useradd -G www-data,root -u $uid -d /home/devuser devuser
 RUN mkdir -p /home/devuser/.composer && \
     chown -R devuser:devuser /home/devuser
+
+# create codeigniter 4
+RUN composer create-project codeigniter4/appstarter ./
+
+# open permission 
+RUN chmod 777 ./ -R
+
+# VOLUME ./app:/var/www/html
 
 EXPOSE 80
