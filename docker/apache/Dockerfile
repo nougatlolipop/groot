@@ -41,7 +41,7 @@ RUN mv composer.phar /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
 RUN composer self-update
 
-COPY src/ /var/www/html/
+# COPY src/ /var/www/html/
 # 6. butuh pengguna yang sama dengan UID/GID dengan host user
 ARG uid
 RUN useradd -G www-data,root -u $uid -d /home/devuser devuser
