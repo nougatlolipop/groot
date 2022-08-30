@@ -25,25 +25,23 @@ RUN docker-php-ext-install \
     pdo_mysql \
     mysqli
 
-# 2. set up document root for apache
+# 2. setingan document root untuk apache
 COPY docker/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
-# 3. mod_rewrite for URL rewrite and mod_headers for .htaccess extra headers like Access-Control-Allow-Origin-
+# 3. mod_rewrite untuk URL rewrite and mod_headers untuk .htaccess extra headers --> Access-Control-Allow-Origin-
 RUN a2enmod rewrite headers
 
-# 4. start with base php config, then add extensions
+# 4. start with base php config, kemudian add extensions
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
-# 5. Composer
+# 5. install composer
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
 RUN composer self-update
 
 COPY src/ /var/www/html/
-# 6. we need a user with the same UID/GID with host user
-# so when we execute CLI commands, all the host file's ownership remains intact
-# otherwise command from inside container will create root-owned files and directories
+# 6. butuh pengguna yang sama dengan UID/GID dengan host user
 ARG uid
 RUN useradd -G www-data,root -u $uid -d /home/devuser devuser
 RUN mkdir -p /home/devuser/.composer && \
